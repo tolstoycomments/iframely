@@ -36,7 +36,8 @@ var log = utils.log;
 
 import { readFile } from 'fs/promises';
 import {pathToFileURL} from "url";
-const json = JSON.parse(await readFile(pathToFileURL('../../package.json')));
+import {join} from "path";
+const json = JSON.parse(await readFile(pathToFileURL(join(process.cwd(), 'package.json'))));
 var version = json.version;
 
 function getRenderLinkCacheKey(uri, req) {
