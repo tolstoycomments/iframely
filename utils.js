@@ -10,7 +10,7 @@
     import * as whitelist from './lib/whitelist.js';
     import * as pluginLoader from './lib/loader/pluginLoader.js';
 
-    import { fileURLToPath } from 'url';
+    import {fileURLToPath, pathToFileURL} from 'url';
     import { dirname } from 'path';
 
     const __filename = fileURLToPath(import.meta.url);
@@ -49,7 +49,7 @@
     HttpError.prototype.__proto__ = Error.prototype;
 
     import { readFile } from 'fs/promises';
-    const json = JSON.parse(await readFile(new URL('./package.json', import.meta.url)));
+    const json = JSON.parse(await readFile(pathToFileURL('./package.json')));
     var version = json.version;
 
     var etag = function(value) {

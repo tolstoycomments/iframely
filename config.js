@@ -2,14 +2,14 @@
     import * as fs from 'fs';
     import * as yaml_config from 'node-yaml-config';
 
-    import { fileURLToPath } from 'url';
+    import {fileURLToPath, pathToFileURL} from 'url';
     import { dirname } from 'path';
 
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
     
     import { readFile } from 'fs/promises';
-    const json = JSON.parse(await readFile(new URL('./package.json', import.meta.url)));
+    const json = JSON.parse(await readFile(pathToFileURL('./package.json')));
     var version = json.version;
 
     const config = {
@@ -371,7 +371,7 @@
     // Providers config loader.
     var local_config_path = path.resolve(__dirname, "config.providers.js");
     if (fs.existsSync(local_config_path)) {
-        var local = await import(local_config_path);
+        var local = await import(pathToFileURL(local_config_path).href);
         local = local && local.default;
         Object.assign(config, local);
     }
@@ -388,12 +388,12 @@
 
     // Try config by NODE_ENV.
     if (fs.existsSync(env_config_path)) {
-        local = await import(env_config_path);
+        local = await import(pathToFileURL(env_config_path).href);
         local = local && local.default;
 
     } else if (fs.existsSync(local_config_path)) {
         // Else - try local config.
-        local = await import(local_config_path);
+        local = await import(pathToFileURL(local_config_path).href);
         local = local && local.default;
     }
 

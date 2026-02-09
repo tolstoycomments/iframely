@@ -35,7 +35,8 @@ function prepareUri(uri) {
 var log = utils.log;
 
 import { readFile } from 'fs/promises';
-const json = JSON.parse(await readFile(new URL('../../package.json', import.meta.url)));
+import {pathToFileURL} from "url";
+const json = JSON.parse(await readFile(pathToFileURL('../../package.json')));
 var version = json.version;
 
 function getRenderLinkCacheKey(uri, req) {
